@@ -1,11 +1,11 @@
-import HelloWorld from "./components/HelloWorld";
+import Header from "./components/Header";
 
 function App() {
   return (
     <div>
-      <HelloWorld />
+      <Header />
     </div>
-  )
+  );
 }
 
-export default App
+export default App;
