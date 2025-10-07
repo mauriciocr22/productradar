@@ -3,9 +3,9 @@ import type {
   AnalyzeRequestBody,
   TestSentimentRequest,
   TextSentimentResponse,
-} from "../types";
+} from '../types';
 
-const API_BASE_URL = "https://localhost:3001";
+const API_BASE_URL = 'https://localhost:3001';
 
 class ApiService {
   private baseUrl: string;
@@ -21,9 +21,9 @@ class ApiService {
 
   async testSentiment(text: string): Promise<TextSentimentResponse> {
     const response = await fetch(`${this.baseUrl}/api/test-gemini`, {
-      method: "POST",
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify({ text } as TestSentimentRequest),
     });
@@ -37,9 +37,9 @@ class ApiService {
 
   async analyzeUrl(url: string): Promise<AnalysisResponse> {
     const response = await fetch(`${this.baseUrl}/api/analyze`, {
-      method: "POST",
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify({ url } as AnalyzeRequestBody),
     });
@@ -51,3 +51,5 @@ class ApiService {
     return response.json();
   }
 }
+
+export default new ApiService();

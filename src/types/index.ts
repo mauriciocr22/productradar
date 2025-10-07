@@ -17,7 +17,7 @@ export interface TextSentimentResponse {
   error?: string;
 }
 
-export type SentimentType = "positive" | "negative" | "neutral";
+export type SentimentType = 'positive' | 'negative' | 'neutral';
 
 export interface Review {
   id: string;
@@ -56,4 +56,11 @@ export interface HistoryResponse {
     analyses: Analysis[];
   };
   error?: string;
+}
+
+// components
+
+export interface LoadingSpinnerProps {
+  size?: 'small' | 'medium' | 'large';
+  message?: string;
 }
