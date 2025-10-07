@@ -64,3 +64,8 @@ export interface LoadingSpinnerProps {
   size?: 'small' | 'medium' | 'large';
   message?: string;
 }
+
+export interface URLInputProps {
+  onSubmit: (url: string) => void;
+  isLoading?: boolean;
+}
