@@ -1,6 +1,7 @@
 import type {
   AnalysisResponse,
   AnalyzeRequestBody,
+  HistoryResponse,
   TestSentimentRequest,
   TextSentimentResponse,
 } from '../types';
@@ -14,11 +15,13 @@ class ApiService {
     this.baseUrl = baseUrl;
   }
 
+  // Health check
   async healthCheck(): Promise<{ status: string; message: string }> {
     const response = await fetch(`${this.baseUrl}/health`);
     return response.json();
   }
 
+  // Teste de analise de sentimento
   async testSentiment(text: string): Promise<TextSentimentResponse> {
     const response = await fetch(`${this.baseUrl}/api/test-gemini`, {
       method: 'POST',
@@ -35,6 +38,7 @@ class ApiService {
     return response.json();
   }
 
+  // Analisa URL
   async analyzeUrl(url: string): Promise<AnalysisResponse> {
     const response = await fetch(`${this.baseUrl}/api/analyze`, {
       method: 'POST',
@@ -43,6 +47,28 @@ class ApiService {
       },
       body: JSON.stringify({ url } as AnalyzeRequestBody),
     });
+
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+    }
+
+    return response.json();
+  }
+
+  // Lista análises
+  async getHistory(): Promise<HistoryResponse> {
+    const response = await fetch(`${this.baseUrl}/api/history`);
+
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+    }
+
+    return response.json();
+  }
+
+  // Análise Única
+  async getAnalysis(id: string): Promise<AnalysisResponse> {
+    const response = await fetch(`${this.baseUrl}/api/analysis/${id}`);
 
     if (!response.ok) {
       throw new Error(`HTTP ${response.status}: ${response.statusText}`);
