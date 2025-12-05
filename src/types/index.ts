@@ -89,5 +89,5 @@ export interface ErrorMessageProps {
 }
 
 export interface HeaderProps {
-  title: string;
+  title?: string;
 }
