@@ -27,16 +27,53 @@ export interface Review {
   createdAt: string;
 }
 
+// Nova estrutura de dados
+export interface Produto {
+  nome: string;
+  descricaoResumida: string;
+  preco: number;
+  vendedor: string;
+}
+
+export interface DistribuicaoEstrelas {
+  '1': number;
+  '2': number;
+  '3': number;
+  '4': number;
+  '5': number;
+}
+
+export interface Metricas {
+  mediaEstrelas: number;
+  totalAvaliacoes: number;
+  reviewsAnalisados: number;
+  distribuicaoEstrelas: DistribuicaoEstrelas;
+}
+
+export interface AnaliseIA {
+  sentimentoGeral: string;
+  pontosFortesRecorrentes: string[];
+  pontosFracosRecorrentes: string[];
+  resumoReviews: string;
+  recomendacao: string;
+  scoreConfiabilidade: number;
+}
+
 export interface Analysis {
   id: string;
   url: string;
-  productName?: string;
-  sentiment: SentimentType;
-  score: number;
-  summary: string;
-  reviewCount: number;
   createdAt: string;
-  reviews: Review[];
+  // Nova estrutura
+  produto: Produto;
+  metricas: Metricas;
+  analiseIA: AnaliseIA;
+  // Campos legados (manter para compatibilidade temporária)
+  productName?: string;
+  sentiment?: SentimentType;
+  score?: number;
+  summary?: string;
+  reviewCount?: number;
+  reviews?: Review[];
 }
 
 export interface AnalyzeRequestBody {
