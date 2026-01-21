@@ -24,11 +24,21 @@ export default function AnalysisResult({ analysis }: AnalysisResultProps) {
   const getRecommendationColor = (recommendation: string) => {
     const recLower = recommendation.toLowerCase();
     if (recLower.startsWith('comprar') || recLower.includes('recomend')) {
-      return 'bg-green-50 border-green-200 text-green-900';
+      return 'bg-gradient-to-br from-green-50 to-emerald-50 border-green-300';
     } else if (recLower.startsWith('não comprar') || recLower.includes('evitar')) {
-      return 'bg-red-50 border-red-200 text-red-900';
+      return 'bg-gradient-to-br from-red-50 to-rose-50 border-red-300';
     }
-    return 'bg-yellow-50 border-yellow-200 text-yellow-900';
+    return 'bg-gradient-to-br from-yellow-50 to-amber-50 border-yellow-300';
+  };
+
+  const getRecommendationTextColor = (recommendation: string) => {
+    const recLower = recommendation.toLowerCase();
+    if (recLower.startsWith('comprar') || recLower.includes('recomend')) {
+      return 'text-green-900';
+    } else if (recLower.startsWith('não comprar') || recLower.includes('evitar')) {
+      return 'text-red-900';
+    }
+    return 'text-yellow-900';
   };
 
   const getRecommendationIcon = (recommendation: string) => {
@@ -41,14 +51,106 @@ export default function AnalysisResult({ analysis }: AnalysisResultProps) {
     return '⚠️';
   };
 
-  // Calcula a porcentagem para a barra de distribuição
-  const getStarPercentage = (count: number) => {
-    const total = analysis.metricas.totalAvaliacoes;
-    return total > 0 ? (count / total) * 100 : 0;
+  const getRecommendationLabel = (recommendation: string) => {
+    const recLower = recommendation.toLowerCase();
+    if (recLower.startsWith('comprar') || recLower.includes('recomend')) {
+      return 'RECOMENDADO';
+    } else if (recLower.startsWith('não comprar') || recLower.includes('evitar')) {
+      return 'NÃO RECOMENDADO';
+    }
+    return 'AVALIAR COM CAUTELA';
+  };
+
+  // Os valores já vêm como porcentagem do backend
+  const getStarPercentage = (percentage: number) => {
+    return percentage;
+  };
+
+  // Calcula a quantidade absoluta de avaliações baseada na porcentagem
+  const getStarCount = (percentage: number) => {
+    return Math.round((percentage / 100) * analysis.metricas.totalAvaliacoes);
   };
 
   return (
     <div className="space-y-6">
+      {/* Recomendação - DESTAQUE PRINCIPAL */}
+      <div className={`rounded-2xl shadow-2xl border-3 p-8 md:p-12 ${getRecommendationColor(analysis.analiseIA.recomendacao)}`}>
+        {/* Badge de Recomendação */}
+        <div className="flex items-center justify-center mb-6">
+          <div className={`inline-flex items-center gap-3 px-6 py-3 rounded-full font-bold text-lg ${getRecommendationTextColor(analysis.analiseIA.recomendacao)} bg-white/80 shadow-lg`}>
+            <span className="text-3xl">
+              {getRecommendationIcon(analysis.analiseIA.recomendacao)}
+            </span>
+            <span>{getRecommendationLabel(analysis.analiseIA.recomendacao)}</span>
+          </div>
+        </div>
+
+        {/* Texto da Recomendação */}
+        <div className="text-center mb-8">
+          <h2 className={`text-2xl md:text-3xl font-bold mb-4 ${getRecommendationTextColor(analysis.analiseIA.recomendacao)}`}>
+            Nossa Recomendação
+          </h2>
+          <p className={`text-xl md:text-2xl leading-relaxed font-medium ${getRecommendationTextColor(analysis.analiseIA.recomendacao)}`}>
+            {analysis.analiseIA.recomendacao}
+          </p>
+        </div>
+
+        {/* Score de Confiabilidade Integrado */}
+        <div className="bg-white/60 backdrop-blur rounded-xl p-6 border border-white/50">
+          <div className="flex flex-col md:flex-row items-center justify-center gap-6">
+            <div className="relative w-28 h-28 flex-shrink-0">
+              <svg className="w-28 h-28 transform -rotate-90">
+                <circle
+                  cx="56"
+                  cy="56"
+                  r="50"
+                  stroke="#e5e7eb"
+                  strokeWidth="10"
+                  fill="none"
+                />
+                <circle
+                  cx="56"
+                  cy="56"
+                  r="50"
+                  stroke={
+                    analysis.analiseIA.scoreConfiabilidade >= 80
+                      ? '#10b981'
+                      : analysis.analiseIA.scoreConfiabilidade >= 50
+                        ? '#f59e0b'
+                        : '#ef4444'
+                  }
+                  strokeWidth="10"
+                  fill="none"
+                  strokeDasharray={`${(analysis.analiseIA.scoreConfiabilidade / 100) * 314} 314`}
+                  strokeLinecap="round"
+                />
+              </svg>
+              <div className="absolute inset-0 flex items-center justify-center">
+                <span className="text-3xl font-bold text-gray-800">
+                  {analysis.analiseIA.scoreConfiabilidade}
+                </span>
+              </div>
+            </div>
+            <div className="text-center md:text-left">
+              <p className="text-lg font-bold text-gray-900 mb-2">
+                Score de Confiabilidade
+              </p>
+              <p className="text-gray-700">
+                Esta análise possui{' '}
+                <span className="font-bold">
+                  {analysis.analiseIA.scoreConfiabilidade >= 80
+                    ? 'alta confiabilidade'
+                    : analysis.analiseIA.scoreConfiabilidade >= 50
+                      ? 'confiabilidade moderada'
+                      : 'baixa confiabilidade'}
+                </span>
+                , baseado na quantidade e qualidade das {analysis.metricas.reviewsAnalisados} avaliações analisadas.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
       {/* Header - Produto e Sentimento */}
       <div className="bg-white rounded-xl shadow-lg p-6 md:p-8">
         <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
@@ -130,11 +232,11 @@ export default function AnalysisResult({ analysis }: AnalysisResultProps) {
         </h3>
         <div className="space-y-3">
           {[5, 4, 3, 2, 1].map((star) => {
-            const count =
+            const percentage =
               analysis.metricas.distribuicaoEstrelas[
                 star.toString() as keyof typeof analysis.metricas.distribuicaoEstrelas
-              ];
-            const percentage = getStarPercentage(count);
+              ] || 0;
+            const count = getStarCount(percentage);
             return (
               <div key={star} className="flex items-center gap-4">
                 <div className="flex items-center gap-1 w-20">
@@ -222,89 +324,6 @@ export default function AnalysisResult({ analysis }: AnalysisResultProps) {
           <p className="text-gray-800 leading-relaxed">
             {analysis.analiseIA.resumoReviews}
           </p>
-        </div>
-      </div>
-
-      {/* Recomendação */}
-      <div className="bg-white rounded-xl shadow-lg p-6 md:p-8">
-        <h3 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
-          <span>💡</span>
-          Recomendação
-        </h3>
-        <div
-          className={`border-2 rounded-xl p-6 ${getRecommendationColor(
-            analysis.analiseIA.recomendacao
-          )}`}
-        >
-          <div className="flex items-start gap-3">
-            <span className="text-3xl flex-shrink-0">
-              {getRecommendationIcon(analysis.analiseIA.recomendacao)}
-            </span>
-            <p className="text-lg font-medium leading-relaxed">
-              {analysis.analiseIA.recomendacao}
-            </p>
-          </div>
-        </div>
-      </div>
-
-      {/* Score de Confiabilidade */}
-      <div className="bg-white rounded-xl shadow-lg p-6 md:p-8">
-        <h3 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
-          <span>🎯</span>
-          Score de Confiabilidade
-        </h3>
-        <div className="flex items-center gap-6">
-          <div className="relative w-32 h-32 flex-shrink-0">
-            <svg className="w-32 h-32 transform -rotate-90">
-              <circle
-                cx="64"
-                cy="64"
-                r="56"
-                stroke="#e5e7eb"
-                strokeWidth="8"
-                fill="none"
-              />
-              <circle
-                cx="64"
-                cy="64"
-                r="56"
-                stroke={
-                  analysis.analiseIA.scoreConfiabilidade >= 80
-                    ? '#10b981'
-                    : analysis.analiseIA.scoreConfiabilidade >= 50
-                      ? '#f59e0b'
-                      : '#ef4444'
-                }
-                strokeWidth="8"
-                fill="none"
-                strokeDasharray={`${(analysis.analiseIA.scoreConfiabilidade / 100) * 351.86} 351.86`}
-                strokeLinecap="round"
-              />
-            </svg>
-            <div className="absolute inset-0 flex items-center justify-center">
-              <span className="text-3xl font-bold text-gray-800">
-                {analysis.analiseIA.scoreConfiabilidade}
-              </span>
-            </div>
-          </div>
-          <div className="flex-1">
-            <p className="text-gray-700 leading-relaxed">
-              Esta análise possui um score de confiabilidade de{' '}
-              <span className="font-bold text-gray-900">
-                {analysis.analiseIA.scoreConfiabilidade}%
-              </span>
-              , baseado na quantidade e qualidade das avaliações analisadas.
-            </p>
-            <div className="mt-4 flex items-center gap-2 text-sm text-gray-600">
-              <span>
-                {analysis.analiseIA.scoreConfiabilidade >= 80
-                  ? '✅ Alta confiabilidade'
-                  : analysis.analiseIA.scoreConfiabilidade >= 50
-                    ? '⚠️ Confiabilidade moderada'
-                    : '❌ Baixa confiabilidade'}
-              </span>
-            </div>
-          </div>
         </div>
       </div>
 
