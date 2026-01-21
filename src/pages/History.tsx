@@ -5,7 +5,7 @@ import ErrorMessage from '../components/ErrorMessage';
 import Header from '../components/Header';
 import LoadingSpinner from '../components/LoadingSpinner';
 import apiService from '../services/api';
-import type { Analysis, SentimentType } from '../types';
+import type { Analysis } from '../types';
 
 export default function History() {
   const [analyses, setAnalyses] = useState<Analysis[]>([]);
@@ -37,26 +37,24 @@ export default function History() {
     }
   };
 
-  const getSentimentColor = (sentiment: SentimentType) => {
-    switch (sentiment.toLowerCase()) {
-      case 'positive':
-        return 'bg-green-100 text-green-800 border-green-200';
-      case 'negative':
-        return 'bg-red-100 text-red-800 border-red-200';
-      default:
-        return 'bg-gray-100 text-gray-800 border-gray-200';
+  const getSentimentColor = (sentiment: string) => {
+    const sentimentLower = sentiment.toLowerCase();
+    if (sentimentLower.includes('positiv')) {
+      return 'bg-green-100 text-green-800 border-green-200';
+    } else if (sentimentLower.includes('negativ')) {
+      return 'bg-red-100 text-red-800 border-red-200';
     }
+    return 'bg-yellow-100 text-yellow-800 border-yellow-200';
   };
 
-  const getSentimentEmoji = (sentiment: SentimentType) => {
-    switch (sentiment.toLowerCase()) {
-      case 'positive':
-        return '😊';
-      case 'negative':
-        return '😞';
-      default:
-        return '😐';
+  const getSentimentEmoji = (sentiment: string) => {
+    const sentimentLower = sentiment.toLowerCase();
+    if (sentimentLower.includes('positiv')) {
+      return '😊';
+    } else if (sentimentLower.includes('negativ')) {
+      return '😞';
     }
+    return '😐';
   };
 
   return (
@@ -129,43 +127,80 @@ export default function History() {
                     {/* Sentiment Badge */}
                     <div className="flex items-center justify-between">
                       <span
-                        className={`inline-flex items-center gap-2 px-3 py-1 rounded-full text-sm font-medium border ${getSentimentColor(
-                          analysis.sentiment
+                        className={`inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-medium border ${getSentimentColor(
+                          analysis.analiseIA.sentimentoGeral
                         )}`}
                       >
-                        <span>{getSentimentEmoji(analysis.sentiment)}</span>
-                        <span className="capitalize">{analysis.sentiment}</span>
+                        <span>
+                          {getSentimentEmoji(analysis.analiseIA.sentimentoGeral)}
+                        </span>
+                        <span>{analysis.analiseIA.sentimentoGeral}</span>
                       </span>
-                      <span className="text-sm text-gray-500">
-                        {analysis.reviewCount} reviews
+                      <span className="text-xs font-semibold text-yellow-600">
+                        {analysis.metricas.mediaEstrelas.toFixed(1)} ⭐
                       </span>
                     </div>
 
                     {/* Product Name */}
-                    {analysis.productName && (
-                      <h3 className="font-semibold text-gray-800 line-clamp-2 group-hover:text-blue-600 transition-colors">
-                        {analysis.productName}
-                      </h3>
-                    )}
+                    <h3 className="font-semibold text-gray-800 line-clamp-2 group-hover:text-blue-600 transition-colors min-h-[3rem]">
+                      {analysis.produto.nome}
+                    </h3>
 
-                    {/* URL */}
-                    <p className="text-sm text-gray-500 truncate">
-                      {analysis.url}
-                    </p>
+                    {/* Price and Seller */}
+                    <div className="flex items-center justify-between">
+                      <p className="text-lg font-bold text-blue-600">
+                        R$ {analysis.produto.preco.toFixed(2)}
+                      </p>
+                      <p className="text-xs text-gray-500">
+                        {analysis.produto.vendedor}
+                      </p>
+                    </div>
 
                     {/* Stats */}
-                    <div className="flex items-center justify-between pt-4 border-t">
+                    <div className="grid grid-cols-2 gap-3 pt-4 border-t">
                       <div className="text-center">
-                        <p className="text-2xl font-bold text-blue-600">
-                          {analysis.score.toFixed(1)}
+                        <p className="text-xl font-bold text-blue-600">
+                          {analysis.metricas.totalAvaliacoes}
                         </p>
-                        <p className="text-xs text-gray-600">Score</p>
+                        <p className="text-xs text-gray-600">Avaliações</p>
                       </div>
                       <div className="text-center">
-                        <p className="text-2xl font-bold text-purple-600">
-                          {analysis.reviewCount}
+                        <p className="text-xl font-bold text-purple-600">
+                          {analysis.metricas.reviewsAnalisados}
                         </p>
-                        <p className="text-xs text-gray-600">Reviews</p>
+                        <p className="text-xs text-gray-600">Analisados</p>
+                      </div>
+                    </div>
+
+                    {/* Confidence Score */}
+                    <div className="pt-3 border-t">
+                      <div className="flex items-center justify-between text-xs">
+                        <span className="text-gray-600">Confiabilidade:</span>
+                        <span
+                          className={`font-semibold ${
+                            analysis.analiseIA.scoreConfiabilidade >= 80
+                              ? 'text-green-600'
+                              : analysis.analiseIA.scoreConfiabilidade >= 50
+                                ? 'text-yellow-600'
+                                : 'text-red-600'
+                          }`}
+                        >
+                          {analysis.analiseIA.scoreConfiabilidade}%
+                        </span>
+                      </div>
+                      <div className="w-full bg-gray-200 rounded-full h-1.5 mt-2">
+                        <div
+                          className={`h-full rounded-full ${
+                            analysis.analiseIA.scoreConfiabilidade >= 80
+                              ? 'bg-green-500'
+                              : analysis.analiseIA.scoreConfiabilidade >= 50
+                                ? 'bg-yellow-500'
+                                : 'bg-red-500'
+                          }`}
+                          style={{
+                            width: `${analysis.analiseIA.scoreConfiabilidade}%`,
+                          }}
+                        />
                       </div>
                     </div>
 
