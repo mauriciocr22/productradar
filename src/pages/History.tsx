@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useAuth } from '../contexts/AuthContext';
 import EmptyState from '../components/EmptyState';
 import ErrorMessage from '../components/ErrorMessage';
 import Header from '../components/Header';
@@ -8,13 +9,18 @@ import apiService from '../services/api';
 import type { Analysis } from '../types';
 
 export default function History() {
+  const { isAuthenticated, isLoading: authLoading } = useAuth();
   const [analyses, setAnalyses] = useState<Analysis[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    loadHistory();
-  }, []);
+    if (isAuthenticated) {
+      loadHistory();
+    } else {
+      setIsLoading(false);
+    }
+  }, [isAuthenticated]);
 
   const loadHistory = async () => {
     setIsLoading(true);
@@ -70,9 +76,11 @@ export default function History() {
                 Histórico de Análises
               </h1>
               <p className="text-gray-600 mt-2">
-                {analyses.length > 0
+                {isAuthenticated && analyses.length > 0
                   ? `${analyses.length} análise${analyses.length > 1 ? 's' : ''} encontrada${analyses.length > 1 ? 's' : ''}`
-                  : 'Nenhuma análise ainda'}
+                  : isAuthenticated
+                    ? 'Nenhuma análise ainda'
+                    : 'Faça login para ver seu histórico'}
               </p>
             </div>
             <Link
@@ -83,20 +91,54 @@ export default function History() {
             </Link>
           </div>
 
+          {/* Login Required Message */}
+          {!authLoading && !isAuthenticated && (
+            <div className="bg-white rounded-xl shadow-lg p-12">
+              <div className="text-center space-y-6">
+                <div className="text-6xl">🔒</div>
+                <div>
+                  <h2 className="text-2xl font-bold text-gray-800 mb-3">
+                    Login Necessário
+                  </h2>
+                  <p className="text-gray-600 text-lg mb-6">
+                    Para usar a função de histórico, é necessário fazer login.
+                  </p>
+                  <p className="text-gray-500 mb-8">
+                    Ao criar uma conta, você poderá salvar e acessar todas as suas análises de produtos.
+                  </p>
+                </div>
+                <div className="flex gap-4 justify-center">
+                  <Link
+                    to="/login"
+                    className="px-8 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors"
+                  >
+                    Fazer Login
+                  </Link>
+                  <Link
+                    to="/register"
+                    className="px-8 py-3 bg-gray-100 text-gray-800 font-semibold rounded-lg hover:bg-gray-200 transition-colors"
+                  >
+                    Criar Conta
+                  </Link>
+                </div>
+              </div>
+            </div>
+          )}
+
           {/* Loading */}
-          {isLoading && (
+          {isLoading && isAuthenticated && (
             <div className="bg-white rounded-xl shadow-md p-8">
               <LoadingSpinner message="Carregando histórico..." />
             </div>
           )}
 
           {/* Error */}
-          {error && !isLoading && (
+          {error && !isLoading && isAuthenticated && (
             <ErrorMessage message={error} onRetry={loadHistory} />
           )}
 
           {/* Empty State */}
-          {!isLoading && !error && analyses.length === 0 && (
+          {!isLoading && !error && analyses.length === 0 && isAuthenticated && (
             <div className="bg-white rounded-xl shadow-md p-12">
               <EmptyState
                 icon="📊"
@@ -114,7 +156,7 @@ export default function History() {
           )}
 
           {/* Lista de análises */}
-          {!isLoading && !error && analyses.length > 0 && (
+          {!isLoading && !error && analyses.length > 0 && isAuthenticated && (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {analyses.map((analysis) => (
                 <Link

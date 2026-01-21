@@ -15,6 +15,19 @@ class ApiService {
     this.baseUrl = baseUrl;
   }
 
+  private getAuthHeaders(): HeadersInit {
+    const token = localStorage.getItem('auth_token');
+    const headers: HeadersInit = {
+      'Content-Type': 'application/json',
+    };
+
+    if (token) {
+      headers['Authorization'] = `Bearer ${token}`;
+    }
+
+    return headers;
+  }
+
   // Health check
   async healthCheck(): Promise<{ status: string; message: string }> {
     const response = await fetch(`${this.baseUrl}/health`);
@@ -25,9 +38,7 @@ class ApiService {
   async testSentiment(text: string): Promise<TextSentimentResponse> {
     const response = await fetch(`${this.baseUrl}/api/test-gemini`, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
+      headers: this.getAuthHeaders(),
       body: JSON.stringify({ text } as TestSentimentRequest),
     });
 
@@ -42,9 +53,7 @@ class ApiService {
   async analyzeUrl(url: string): Promise<AnalysisResponse> {
     const response = await fetch(`${this.baseUrl}/api/analyze`, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
+      headers: this.getAuthHeaders(),
       body: JSON.stringify({ url } as AnalyzeRequestBody),
     });
 
@@ -57,7 +66,9 @@ class ApiService {
 
   // Lista análises
   async getHistory(): Promise<HistoryResponse> {
-    const response = await fetch(`${this.baseUrl}/api/history`);
+    const response = await fetch(`${this.baseUrl}/api/history`, {
+      headers: this.getAuthHeaders(),
+    });
 
     if (!response.ok) {
       throw new Error(`HTTP ${response.status}: ${response.statusText}`);
@@ -68,7 +79,9 @@ class ApiService {
 
   // Análise Única
   async getAnalysis(id: string): Promise<AnalysisResponse> {
-    const response = await fetch(`${this.baseUrl}/api/analysis/${id}`);
+    const response = await fetch(`${this.baseUrl}/api/analysis/${id}`, {
+      headers: this.getAuthHeaders(),
+    });
 
     if (!response.ok) {
       throw new Error(`HTTP ${response.status}: ${response.statusText}`);
