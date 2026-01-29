@@ -43,16 +43,16 @@ export default function Home() {
     <div className="min-h-screen bg-gray-50">
       <Header />
 
-      <main className="container mx-auto px-4 py-12">
-        <div className="max-w-4xl mx-auto space-y-8">
+      <main className="container mx-auto px-4 py-6 md:py-12">
+        <div className="max-w-4xl mx-auto space-y-6 md:space-y-8">
           {/* Input Section */}
-          <div className="bg-white rounded-xl shadow-md p-8">
+          <div className="bg-white rounded-xl shadow-md p-4 md:p-8">
             <URLInput onSubmit={handleAnalyze} isLoading={isLoading} />
           </div>
 
           {/* Loading */}
           {isLoading && (
-            <div className="bg-white rounded-xl shadow-md p-8">
+            <div className="bg-white rounded-xl shadow-md p-4 md:p-8">
               <LoadingSpinner
                 size="large"
                 message="Analisando reviews da URL..."
@@ -72,7 +72,7 @@ export default function Home() {
 
           {/* Instructions */}
           {!analysis && !isLoading && !error && (
-            <div className="bg-blue-50 border border-blue-200 rounded-xl p-6">
+            <div className="bg-blue-50 border border-blue-200 rounded-xl p-4 md:p-6">
               <h3 className="text-blue-900 font-semibold mb-3 flex items-center gap-2">
                 <span>💡</span>
                 Como funciona

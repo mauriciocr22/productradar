@@ -72,13 +72,13 @@ export default function AnalysisResult({ analysis }: AnalysisResultProps) {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 md:space-y-6">
       {/* Recomendação - DESTAQUE PRINCIPAL */}
-      <div className={`rounded-2xl shadow-2xl border-3 p-8 md:p-12 ${getRecommendationColor(analysis.analiseIA.recomendacao)}`}>
+      <div className={`rounded-xl md:rounded-2xl shadow-2xl border-2 md:border-3 p-4 sm:p-6 md:p-8 lg:p-12 ${getRecommendationColor(analysis.analiseIA.recomendacao)}`}>
         {/* Badge de Recomendação */}
-        <div className="flex items-center justify-center mb-6">
-          <div className={`inline-flex items-center gap-3 px-6 py-3 rounded-full font-bold text-lg ${getRecommendationTextColor(analysis.analiseIA.recomendacao)} bg-white/80 shadow-lg`}>
-            <span className="text-3xl">
+        <div className="flex items-center justify-center mb-4 md:mb-6">
+          <div className={`inline-flex items-center gap-2 md:gap-3 px-4 md:px-6 py-2 md:py-3 rounded-full font-bold text-sm md:text-base lg:text-lg ${getRecommendationTextColor(analysis.analiseIA.recomendacao)} bg-white/80 shadow-lg`}>
+            <span className="text-2xl md:text-3xl">
               {getRecommendationIcon(analysis.analiseIA.recomendacao)}
             </span>
             <span>{getRecommendationLabel(analysis.analiseIA.recomendacao)}</span>
@@ -86,17 +86,17 @@ export default function AnalysisResult({ analysis }: AnalysisResultProps) {
         </div>
 
         {/* Texto da Recomendação */}
-        <div className="text-center mb-8">
-          <h2 className={`text-2xl md:text-3xl font-bold mb-4 ${getRecommendationTextColor(analysis.analiseIA.recomendacao)}`}>
+        <div className="text-center mb-6 md:mb-8">
+          <h2 className={`text-xl sm:text-2xl md:text-3xl font-bold mb-3 md:mb-4 ${getRecommendationTextColor(analysis.analiseIA.recomendacao)}`}>
             Nossa Recomendação
           </h2>
-          <p className={`text-xl md:text-2xl leading-relaxed font-medium ${getRecommendationTextColor(analysis.analiseIA.recomendacao)}`}>
+          <p className={`text-base sm:text-lg md:text-xl lg:text-2xl leading-relaxed font-medium ${getRecommendationTextColor(analysis.analiseIA.recomendacao)}`}>
             {analysis.analiseIA.recomendacao}
           </p>
         </div>
 
         {/* Score de Confiabilidade Integrado */}
-        <div className="bg-white/60 backdrop-blur rounded-xl p-6 border border-white/50">
+        <div className="bg-white/60 backdrop-blur rounded-xl p-4 md:p-6 border border-white/50">
           <div className="flex flex-col md:flex-row items-center justify-center gap-6">
             <div className="relative w-28 h-28 flex-shrink-0">
               <svg className="w-28 h-28 transform -rotate-90">
@@ -152,34 +152,34 @@ export default function AnalysisResult({ analysis }: AnalysisResultProps) {
       </div>
 
       {/* Header - Produto e Sentimento */}
-      <div className="bg-white rounded-xl shadow-lg p-6 md:p-8">
+      <div className="bg-white rounded-xl shadow-lg p-4 md:p-6 lg:p-8">
         <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
           <div className="flex-1">
-            <div className="flex items-center gap-3 mb-3">
-              <span className="text-3xl">
+            <div className="flex items-center gap-2 md:gap-3 mb-2 md:mb-3">
+              <span className="text-2xl md:text-3xl">
                 {getSentimentEmoji(analysis.analiseIA.sentimentoGeral)}
               </span>
               <span
-                className={`inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold border ${getSentimentColor(
+                className={`inline-flex items-center gap-2 px-3 md:px-4 py-1.5 md:py-2 rounded-full text-xs md:text-sm font-semibold border ${getSentimentColor(
                   analysis.analiseIA.sentimentoGeral
                 )}`}
               >
                 {analysis.analiseIA.sentimentoGeral}
               </span>
             </div>
-            <h2 className="text-2xl md:text-3xl font-bold text-gray-800 mb-2">
+            <h2 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-gray-800 mb-2">
               {analysis.produto.nome}
             </h2>
-            <p className="text-gray-600 leading-relaxed">
+            <p className="text-sm md:text-base text-gray-600 leading-relaxed">
               {analysis.produto.descricaoResumida}
             </p>
           </div>
-          <div className="flex flex-col items-end gap-2">
-            <div className="text-right">
-              <p className="text-3xl font-bold text-blue-600">
+          <div className="flex flex-col items-start md:items-end gap-2">
+            <div className="text-left md:text-right">
+              <p className="text-2xl md:text-3xl font-bold text-blue-600">
                 R$ {analysis.produto.preco.toFixed(2)}
               </p>
-              <p className="text-sm text-gray-500">
+              <p className="text-xs md:text-sm text-gray-500">
                 Vendido por {analysis.produto.vendedor}
               </p>
             </div>
@@ -187,12 +187,12 @@ export default function AnalysisResult({ analysis }: AnalysisResultProps) {
         </div>
 
         {/* URL Analisada */}
-        <div className="mt-6 pt-6 border-t">
+        <div className="mt-4 md:mt-6 pt-4 md:pt-6 border-t">
           <label className="block text-xs font-semibold text-gray-500 uppercase mb-2">
             URL Analisada
           </label>
-          <div className="bg-gray-50 rounded-lg p-3 border border-gray-200">
-            <p className="text-sm text-gray-600 break-all">{analysis.url}</p>
+          <div className="bg-gray-50 rounded-lg p-2 md:p-3 border border-gray-200">
+            <p className="text-xs md:text-sm text-gray-600 break-all">{analysis.url}</p>
           </div>
           <p className="text-xs text-gray-400 mt-2">
             Análise realizada em{' '}
@@ -202,35 +202,35 @@ export default function AnalysisResult({ analysis }: AnalysisResultProps) {
       </div>
 
       {/* Métricas Principais */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div className="bg-white rounded-xl shadow-md p-6 text-center">
-          <div className="text-4xl font-bold text-yellow-500 mb-2">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 md:gap-4">
+        <div className="bg-white rounded-xl shadow-md p-4 md:p-6 text-center">
+          <div className="text-3xl md:text-4xl font-bold text-yellow-500 mb-1 md:mb-2">
             {analysis.metricas.mediaEstrelas.toFixed(1)} ⭐
           </div>
-          <p className="text-sm text-gray-600 font-medium">Média de Estrelas</p>
+          <p className="text-xs md:text-sm text-gray-600 font-medium">Média de Estrelas</p>
         </div>
-        <div className="bg-white rounded-xl shadow-md p-6 text-center">
-          <div className="text-4xl font-bold text-blue-600 mb-2">
+        <div className="bg-white rounded-xl shadow-md p-4 md:p-6 text-center">
+          <div className="text-3xl md:text-4xl font-bold text-blue-600 mb-1 md:mb-2">
             {analysis.metricas.totalAvaliacoes}
           </div>
-          <p className="text-sm text-gray-600 font-medium">
+          <p className="text-xs md:text-sm text-gray-600 font-medium">
             Total de Avaliações
           </p>
         </div>
-        <div className="bg-white rounded-xl shadow-md p-6 text-center">
-          <div className="text-4xl font-bold text-purple-600 mb-2">
+        <div className="bg-white rounded-xl shadow-md p-4 md:p-6 text-center">
+          <div className="text-3xl md:text-4xl font-bold text-purple-600 mb-1 md:mb-2">
             {analysis.metricas.reviewsAnalisados}
           </div>
-          <p className="text-sm text-gray-600 font-medium">Reviews Analisados</p>
+          <p className="text-xs md:text-sm text-gray-600 font-medium">Reviews Analisados</p>
         </div>
       </div>
 
       {/* Distribuição de Estrelas */}
-      <div className="bg-white rounded-xl shadow-lg p-6 md:p-8">
-        <h3 className="text-xl font-bold text-gray-800 mb-6">
+      <div className="bg-white rounded-xl shadow-lg p-4 md:p-6 lg:p-8">
+        <h3 className="text-lg md:text-xl font-bold text-gray-800 mb-4 md:mb-6">
           Distribuição de Avaliações
         </h3>
-        <div className="space-y-3">
+        <div className="space-y-2 md:space-y-3">
           {[5, 4, 3, 2, 1].map((star) => {
             const percentage =
               analysis.metricas.distribuicaoEstrelas[
@@ -238,21 +238,21 @@ export default function AnalysisResult({ analysis }: AnalysisResultProps) {
               ] || 0;
             const count = getStarCount(percentage);
             return (
-              <div key={star} className="flex items-center gap-4">
-                <div className="flex items-center gap-1 w-20">
-                  <span className="text-sm font-medium text-gray-700">
+              <div key={star} className="flex items-center gap-2 md:gap-4">
+                <div className="flex items-center gap-1 w-12 md:w-16">
+                  <span className="text-xs md:text-sm font-medium text-gray-700">
                     {star}
                   </span>
-                  <span className="text-yellow-500">⭐</span>
+                  <span className="text-yellow-500 text-sm md:text-base">⭐</span>
                 </div>
-                <div className="flex-1 h-6 bg-gray-200 rounded-full overflow-hidden">
+                <div className="flex-1 h-5 md:h-6 bg-gray-200 rounded-full overflow-hidden">
                   <div
                     className="h-full bg-gradient-to-r from-yellow-400 to-yellow-500 transition-all duration-500"
                     style={{ width: `${percentage}%` }}
                   />
                 </div>
-                <div className="w-20 text-right">
-                  <span className="text-sm font-semibold text-gray-700">
+                <div className="w-16 md:w-20 text-right">
+                  <span className="text-xs md:text-sm font-semibold text-gray-700">
                     {count}
                   </span>
                   <span className="text-xs text-gray-500 ml-1">
@@ -266,19 +266,19 @@ export default function AnalysisResult({ analysis }: AnalysisResultProps) {
       </div>
 
       {/* Pontos Fortes e Fracos */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
         {/* Pontos Fortes */}
-        <div className="bg-white rounded-xl shadow-lg p-6">
-          <div className="flex items-center gap-2 mb-4">
-            <span className="text-2xl">👍</span>
-            <h3 className="text-lg font-bold text-gray-800">Pontos Fortes</h3>
+        <div className="bg-white rounded-xl shadow-lg p-4 md:p-6">
+          <div className="flex items-center gap-2 mb-3 md:mb-4">
+            <span className="text-xl md:text-2xl">👍</span>
+            <h3 className="text-base md:text-lg font-bold text-gray-800">Pontos Fortes</h3>
           </div>
           {analysis.analiseIA.pontosFortesRecorrentes.length > 0 ? (
             <ul className="space-y-2">
               {analysis.analiseIA.pontosFortesRecorrentes.map((ponto, index) => (
                 <li
                   key={index}
-                  className="flex items-start gap-2 text-gray-700"
+                  className="flex items-start gap-2 text-sm md:text-base text-gray-700"
                 >
                   <span className="text-green-500 mt-1">✓</span>
                   <span className="flex-1">{ponto}</span>
@@ -291,17 +291,17 @@ export default function AnalysisResult({ analysis }: AnalysisResultProps) {
         </div>
 
         {/* Pontos Fracos */}
-        <div className="bg-white rounded-xl shadow-lg p-6">
-          <div className="flex items-center gap-2 mb-4">
-            <span className="text-2xl">👎</span>
-            <h3 className="text-lg font-bold text-gray-800">Pontos Fracos</h3>
+        <div className="bg-white rounded-xl shadow-lg p-4 md:p-6">
+          <div className="flex items-center gap-2 mb-3 md:mb-4">
+            <span className="text-xl md:text-2xl">👎</span>
+            <h3 className="text-base md:text-lg font-bold text-gray-800">Pontos Fracos</h3>
           </div>
           {analysis.analiseIA.pontosFracosRecorrentes.length > 0 ? (
             <ul className="space-y-2">
               {analysis.analiseIA.pontosFracosRecorrentes.map((ponto, index) => (
                 <li
                   key={index}
-                  className="flex items-start gap-2 text-gray-700"
+                  className="flex items-start gap-2 text-sm md:text-base text-gray-700"
                 >
                   <span className="text-red-500 mt-1">✗</span>
                   <span className="flex-1">{ponto}</span>
@@ -309,29 +309,29 @@ export default function AnalysisResult({ analysis }: AnalysisResultProps) {
               ))}
             </ul>
           ) : (
-            <p className="text-gray-500 italic">Nenhum ponto fraco identificado</p>
+            <p className="text-sm md:text-base text-gray-500 italic">Nenhum ponto fraco identificado</p>
           )}
         </div>
       </div>
 
       {/* Resumo das Reviews */}
-      <div className="bg-white rounded-xl shadow-lg p-6 md:p-8">
-        <h3 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+      <div className="bg-white rounded-xl shadow-lg p-4 md:p-6 lg:p-8">
+        <h3 className="text-lg md:text-xl font-bold text-gray-800 mb-3 md:mb-4 flex items-center gap-2">
           <span>📝</span>
           Resumo das Avaliações
         </h3>
-        <div className="bg-blue-50 border-l-4 border-blue-500 rounded-lg p-5">
-          <p className="text-gray-800 leading-relaxed">
+        <div className="bg-blue-50 border-l-4 border-blue-500 rounded-lg p-4 md:p-5">
+          <p className="text-sm md:text-base text-gray-800 leading-relaxed">
             {analysis.analiseIA.resumoReviews}
           </p>
         </div>
       </div>
 
       {/* Botão de Nova Análise */}
-      <div className="bg-white rounded-xl shadow-lg p-6">
+      <div className="bg-white rounded-xl shadow-lg p-4 md:p-6">
         <button
           onClick={() => (window.location.href = '/')}
-          className="w-full px-6 py-4 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors text-lg"
+          className="w-full px-4 md:px-6 py-3 md:py-4 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors text-base md:text-lg"
         >
           Analisar Outro Produto
         </button>

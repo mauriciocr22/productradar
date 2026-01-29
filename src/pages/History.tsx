@@ -67,15 +67,15 @@ export default function History() {
     <div className="min-h-screen bg-gray-50">
       <Header title="Histórico de Análises" />
 
-      <main className="container mx-auto px-4 py-12">
+      <main className="container mx-auto px-4 py-6 md:py-12">
         <div className="max-w-6xl mx-auto">
           {/* Header da página */}
-          <div className="flex items-center justify-between mb-8">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6 md:mb-8">
             <div>
-              <h1 className="text-3xl font-bold text-gray-800">
+              <h1 className="text-2xl md:text-3xl font-bold text-gray-800">
                 Histórico de Análises
               </h1>
-              <p className="text-gray-600 mt-2">
+              <p className="text-sm md:text-base text-gray-600 mt-1 md:mt-2">
                 {isAuthenticated && analyses.length > 0
                   ? `${analyses.length} análise${analyses.length > 1 ? 's' : ''} encontrada${analyses.length > 1 ? 's' : ''}`
                   : isAuthenticated
@@ -85,7 +85,7 @@ export default function History() {
             </div>
             <Link
               to="/"
-              className="px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors"
+              className="w-full sm:w-auto px-4 md:px-6 py-2 md:py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors text-center text-sm md:text-base"
             >
               + Nova Análise
             </Link>
@@ -93,30 +93,30 @@ export default function History() {
 
           {/* Login Required Message */}
           {!authLoading && !isAuthenticated && (
-            <div className="bg-white rounded-xl shadow-lg p-12">
-              <div className="text-center space-y-6">
-                <div className="text-6xl">🔒</div>
+            <div className="bg-white rounded-xl shadow-lg p-6 md:p-12">
+              <div className="text-center space-y-4 md:space-y-6">
+                <div className="text-4xl md:text-6xl">🔒</div>
                 <div>
-                  <h2 className="text-2xl font-bold text-gray-800 mb-3">
+                  <h2 className="text-xl md:text-2xl font-bold text-gray-800 mb-2 md:mb-3">
                     Login Necessário
                   </h2>
-                  <p className="text-gray-600 text-lg mb-6">
+                  <p className="text-gray-600 text-base md:text-lg mb-4 md:mb-6">
                     Para usar a função de histórico, é necessário fazer login.
                   </p>
-                  <p className="text-gray-500 mb-8">
+                  <p className="text-sm md:text-base text-gray-500 mb-6 md:mb-8">
                     Ao criar uma conta, você poderá salvar e acessar todas as suas análises de produtos.
                   </p>
                 </div>
-                <div className="flex gap-4 justify-center">
+                <div className="flex flex-col sm:flex-row gap-3 md:gap-4 justify-center">
                   <Link
                     to="/login"
-                    className="px-8 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors"
+                    className="px-6 md:px-8 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors text-sm md:text-base"
                   >
                     Fazer Login
                   </Link>
                   <Link
                     to="/register"
-                    className="px-8 py-3 bg-gray-100 text-gray-800 font-semibold rounded-lg hover:bg-gray-200 transition-colors"
+                    className="px-6 md:px-8 py-3 bg-gray-100 text-gray-800 font-semibold rounded-lg hover:bg-gray-200 transition-colors text-sm md:text-base"
                   >
                     Criar Conta
                   </Link>
@@ -127,7 +127,7 @@ export default function History() {
 
           {/* Loading */}
           {isLoading && isAuthenticated && (
-            <div className="bg-white rounded-xl shadow-md p-8">
+            <div className="bg-white rounded-xl shadow-md p-6 md:p-8">
               <LoadingSpinner message="Carregando histórico..." />
             </div>
           )}
@@ -139,7 +139,7 @@ export default function History() {
 
           {/* Empty State */}
           {!isLoading && !error && analyses.length === 0 && isAuthenticated && (
-            <div className="bg-white rounded-xl shadow-md p-12">
+            <div className="bg-white rounded-xl shadow-md p-6 md:p-12">
               <EmptyState
                 icon="📊"
                 message="Nenhuma análise realizada ainda. Comece analisando sua primeira URL!"
@@ -157,7 +157,7 @@ export default function History() {
 
           {/* Lista de análises */}
           {!isLoading && !error && analyses.length > 0 && isAuthenticated && (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
               {analyses.map((analysis) => (
                 <Link
                   key={analysis.id}
