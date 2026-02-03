@@ -183,4 +183,4 @@ O frontend se comunica com a API através do `ApiService` que gerencia:
 
 ---
 
-Desenvolvido por [Seu Nome](https://github.com/mauriciocr22) | [LinkedIn](https://linkedin.com/in/mauriciocr22)
+Desenvolvido por [Maurício Rodrigues](https://github.com/mauriciocr22) | [LinkedIn](https://linkedin.com/in/mauriciocr22)
