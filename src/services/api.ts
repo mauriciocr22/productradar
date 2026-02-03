@@ -6,7 +6,7 @@ import type {
   TextSentimentResponse,
 } from '../types';
 
-const API_BASE_URL = 'http://localhost:3001';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001';
 
 class ApiService {
   private baseUrl: string;
