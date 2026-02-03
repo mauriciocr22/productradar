@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import type { HeaderProps } from '../types';
 
-export default function Header({ title = 'Review Analyzer' }: HeaderProps) {
+export default function Header({ title = 'ProductRadar' }: HeaderProps) {
   const { isAuthenticated, user, logout } = useAuth();
   const navigate = useNavigate();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -21,11 +21,15 @@ export default function Header({ title = 'Review Analyzer' }: HeaderProps) {
         <div className="hidden md:flex items-center justify-between">
           {/* Logo e Título */}
           <div>
-            <Link to="/" className="hover:opacity-90 transition-opacity">
-              <h1 className="text-2xl lg:text-3xl font-bold">{title}</h1>
+            <Link to="/" className="hover:opacity-90 transition-opacity group">
+              <h1 className="text-2xl lg:text-3xl font-black tracking-tight group-hover:tracking-normal transition-all">
+                <span className="bg-clip-text text-transparent bg-gradient-to-r from-white via-blue-100 to-white">
+                  {title}
+                </span>
+              </h1>
             </Link>
-            <p className="text-blue-100 mt-1 text-sm lg:text-base">
-              Análise de sentimento de reviews usando IA
+            <p className="text-blue-100 mt-1 text-sm lg:text-base font-light">
+              Análise inteligente de produtos usando IA
             </p>
           </div>
 
@@ -82,8 +86,12 @@ export default function Header({ title = 'Review Analyzer' }: HeaderProps) {
         {/* Mobile Layout */}
         <div className="md:hidden">
           <div className="flex items-center justify-between">
-            <Link to="/" className="hover:opacity-90 transition-opacity">
-              <h1 className="text-xl font-bold">{title}</h1>
+            <Link to="/" className="hover:opacity-90 transition-opacity group">
+              <h1 className="text-xl font-black tracking-tight group-hover:tracking-normal transition-all">
+                <span className="bg-clip-text text-transparent bg-gradient-to-r from-white via-blue-100 to-white">
+                  {title}
+                </span>
+              </h1>
             </Link>
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}

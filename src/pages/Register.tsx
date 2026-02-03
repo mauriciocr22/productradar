@@ -44,10 +44,10 @@ export default function Register() {
     <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4">
       <div className="max-w-md w-full space-y-8">
         <div className="text-center">
-          <h2 className="text-3xl font-bold text-gray-900">
-            Review Analyzer
+          <h2 className="text-4xl font-black tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600">
+            ProductRadar
           </h2>
-          <p className="mt-2 text-sm text-gray-600">
+          <p className="mt-3 text-sm text-gray-600 font-light">
             Crie sua conta para começar
           </p>
         </div>
